@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+DevGauge - AI Assisted Assessment Platform
 
-## Getting Started
+Phase 1: MVP Scope – "DevGauge"
+🎯 Objective
+Build a usable, hosted, AI-powered skill assessment app that:
 
-First, run the development server:
+Accepts resume uploads
+Analyzes them via OpenAI
+Simulates a conversational Q&A
+Presents coding challenges in a custom editor
+Generates a final score/feedback
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔹 1. Project Setup
+ Next.js + TypeScript + App Router
+ TailwindCSS setup
+ MongoDB Atlas (Mongoose or Prisma)
+ OpenAI API Key env setup
+ File upload feature (PDF resume upload)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ 🔹 2. Authentication
+ Clerk or NextAuth.js (GitHub/Email login)
+ Protect dashboard routes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+ 🔹 3. Stage 1 – Resume Analyzer
+ User uploads resume → Send to OpenAI via /api/analyze-resume
+ AI generates level + 5 tailored questions
+ Simple chat interface with AI (one prompt at a time)
+ Store chat transcript + AI score to DB
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+ 🔹 4. Stage 2 – Coding Test
+ Create code editor page (CodeMirror or Monaco)
+ Fetch 4 questions based on level
+ User writes code, runs against sample test cases
+ Basic evaluation simulation (mock for now)
+ Score stored in DB
 
-## Learn More
+ 🔹 5. Completion Page
+ Final screen shows “Thank you” + score breakdown
+ Option to download result as PDF (future)
 
-To learn more about Next.js, take a look at the following resources:
+🧱 Base Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Feature	Stack
+Frontend:	        React (Next.js App Router)
+Auth:	            Clerk.dev (easier for MVP)
+Backend APIs:       Next.js API Routes
+File Upload:    	FormData + Cloudinary or UploadThing
+AI Integration: 	OpenAI API (GPT-4)
+Code Editor:    	CodeMirror or Monaco
+DB:             	MongoDB Atlas + Mongoose
+Hosting:            Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+🧠 High-Level Plan
+🔹 Features:
+Display the AI’s first question after resume analysis
+Allow user to respond
+AI reads response, replies with another question (up to 5 rounds)
+Store conversation (optional for now)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

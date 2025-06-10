@@ -1,28 +1,33 @@
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ResumeUploadPage() {
   const [file, setFile] = useState<File | null>(null);
+  const [result, setResult] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('cliked!')
     e.preventDefault();
     if (!file) return;
 
     const formData = new FormData();
-    formData.append('resume', file);
+    formData.append("resume", file);
 
-    console.log('hello')
+    try {
+      const res = await fetch("/api/analyze-resume", {
+        method: "POST",
+        body: formData,
+      });
 
-    const res = await fetch('/api/analyze-resume', {
-      method: 'POST',
-      body: formData,
-    });
-
-    console.log('end')
-
-    const result = await res.json();
-    console.log('AI response:', result);
+      const data = await res.json();
+      setResult(data.summary);
+      setError("");
+    } catch (err: any) {
+      setError("Upload failed. Please try again.");
+      console.error(err);
+    }
   };
 
   return (
@@ -42,6 +47,25 @@ export default function ResumeUploadPage() {
           Analyze Resume
         </button>
       </form>
+
+      {result && (
+        <div className="mt-4 p-4 bg-green-100 rounded space-y-4">
+          <div>
+            <strong>AI Summary:</strong>
+            <p>{result}</p>
+          </div>
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={() => router.push("/dashboard")}
+          >
+            Continue to AI Interview
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>
+      )}
     </main>
   );
 }
